@@ -287,51 +287,82 @@ class PmpApp {
     this.renderDuel();
   }
 
-  updateStatsUI() {
-    const today = new Date(this.todayStr + 'T00:00:00');
-    const target = new Date(this.userState.targetDate + 'T00:00:00');
-    const diffTime = target - today;
-    const diffDays = Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+  // 計算實際有學習紀錄的有效天數 (只有刷過題目的日子才算 1 天)
+  getActiveDaysList() {
+    if (!this.userState.history) return [];
+    return Object.keys(this.userState.history)
+      .filter(date => this.userState.history[date] && this.userState.history[date].answered > 0)
+      .sort();
+  }
 
-    // 計算第幾天
-    const start = new Date((this.userState.startDate || this.todayStr) + 'T00:00:00');
-    const current = new Date(this.viewingDate + 'T00:00:00');
-    const dayNumber = Math.max(1, Math.round((current - start) / (1000 * 60 * 60 * 24)) + 1);
+  updateStatsUI() {
+    const activeDates = this.getActiveDaysList();
+    const activeDaysCount = activeDates.length;
+    const targetDays = 90;
 
     const isToday = (this.viewingDate === this.todayStr);
-
-    if (this.el.countdownVal) this.el.countdownVal.innerText = `${diffDays} 天`;
-    
-    // 取得當前檢視日期的紀錄
-    const dayLog = this.userState.history[this.viewingDate] || { answered: 0, correct: 0 };
+    const dayLog = (this.userState.history && this.userState.history[this.viewingDate]) || { answered: 0, correct: 0 };
     const answeredCount = isToday ? this.userState.todayAnswered : dayLog.answered;
 
-    if (this.el.streakVal) {
-      this.el.streakVal.innerText = isToday 
-        ? `🔥 今日已刷 ${answeredCount} 題` 
-        : `📜 該日刷題 ${answeredCount} 題`;
+    // 1. 頂部進度條顯示：累積有效天數 / 90 天
+    if (this.el.countdownVal) {
+      this.el.countdownVal.innerText = `${activeDaysCount} / ${targetDays} 天`;
     }
 
-    // 更新日期文字與標籤
+    // 2. 刷題數藥丸
+    if (this.el.streakVal) {
+      if (isToday) {
+        this.el.streakVal.innerText = answeredCount > 0 
+          ? `🔥 今日已刷 ${answeredCount} 題 (已打卡)` 
+          : `☕ 今日尚未打卡 (刷 1 題即計入)`;
+      } else {
+        this.el.streakVal.innerText = answeredCount > 0 
+          ? `📜 該日刷題 ${answeredCount} 題` 
+          : `💤 當日無紀錄 (Pass)`;
+      }
+    }
+
+    // 3. 日期導航標籤
     if (this.el.currentViewDate) {
       this.el.currentViewDate.innerText = isToday ? `${this.viewingDate} (今天)` : `${this.viewingDate}`;
     }
+
+    // 4. 徽章：判斷這一天是第幾個「有效學習日」
     if (this.el.dateSubBadge) {
-      this.el.dateSubBadge.innerText = `第 ${dayNumber} 天`;
+      const activeIndex = activeDates.indexOf(this.viewingDate);
+      if (activeIndex !== -1) {
+        this.el.dateSubBadge.innerText = `有效第 ${activeIndex + 1} 天`;
+        this.el.dateSubBadge.style.background = 'rgba(34, 197, 94, 0.15)';
+        this.el.dateSubBadge.style.color = 'var(--accent-green)';
+      } else if (isToday) {
+        this.el.dateSubBadge.innerText = answeredCount > 0 ? `有效第 ${activeDaysCount} 天` : '今日待刷';
+        this.el.dateSubBadge.style.background = 'rgba(56, 189, 248, 0.15)';
+        this.el.dateSubBadge.style.color = 'var(--accent-blue)';
+      } else {
+        this.el.dateSubBadge.innerText = '未打卡 (不計入)';
+        this.el.dateSubBadge.style.background = 'rgba(148, 163, 184, 0.15)';
+        this.el.dateSubBadge.style.color = 'var(--text-muted)';
+      }
     }
 
-    // 控制後一天按鈕是否禁用 (不能選未來的日期)
+    // 5. 控制後一天按鈕是否禁用 (不能選未來的日期)
     if (this.el.btnNextDay) {
       this.el.btnNextDay.disabled = isToday;
     }
 
-    // 歷史模式橫幅顯隱
+    // 6. 歷史模式橫幅文字更新
     if (this.el.historyBanner) {
       this.el.historyBanner.style.display = isToday ? 'none' : 'flex';
+      const historyBannerText = document.getElementById('history-banner-text');
+      if (historyBannerText) {
+        historyBannerText.innerText = answeredCount > 0
+          ? `📜 歷史回顧：該日完成 ${answeredCount} 題 (計入 90 天)`
+          : `☕ 歷史回顧：當天休假未打卡 (不扣天數)`;
+      }
     }
 
-    // 進度條比例 (以 100 題為里程碑計算)
-    const progressPct = Math.min(100, Math.max(10, Math.round((this.userState.totalCorrect / 50) * 100)));
+    // 7. 進度條百分比：依「有效天數 / 90」實打實推進
+    const progressPct = Math.min(100, Math.max(3, Math.round((activeDaysCount / targetDays) * 100)));
     if (this.el.progressFill) this.el.progressFill.style.width = `${progressPct}%`;
   }
 
@@ -339,6 +370,34 @@ class PmpApp {
   renderDuel() {
     const duel = this.data.duels[this.duelIndex];
     if (!duel) return;
+
+    const isHistory = (this.viewingDate !== this.todayStr);
+    const pastLog = this.userState.history && this.userState.history[this.viewingDate];
+
+    // 若切換到過去未打卡的日子，顯示休假提示，消除心理壓力
+    if (isHistory && (!pastLog || pastLog.answered === 0)) {
+      this.el.duelContainer.innerHTML = `
+        <div style="text-align: center; padding: 36px 16px;">
+          <div style="font-size: 42px; margin-bottom: 12px;">☕</div>
+          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px; color: #f1f5f9;">
+            ${this.viewingDate} 無打卡紀錄
+          </h3>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 22px;">
+            這一天可能放假或處理公事，<strong>完全不扣除 90 天進度</strong>！<br/>
+            我們只計算實打實的「有效學習日」，安心享受生活。
+          </p>
+          <button class="btn-next-action" id="btn-empty-back-today" style="max-width: 220px; margin: 0 auto;">
+            返回今天繼續衝刺 ➔
+          </button>
+        </div>
+      `;
+      document.getElementById('btn-empty-back-today').addEventListener('click', () => {
+        this.viewingDate = this.todayStr;
+        this.updateStatsUI();
+        this.renderDuel();
+      });
+      return;
+    }
 
     this.chineseRevealed = !this.englishFirst;
 

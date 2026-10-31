@@ -40,12 +40,12 @@
       </div>
     </header>
 
-    <!-- 90-Day Tracker Banner -->
+    <!-- 90 個有效學習日進度 Banner -->
     <div class="stats-banner">
       <div class="countdown-row">
         <div class="countdown-label">
-          <span>目標倒數：</span>
-          <span class="countdown-value" id="countdown-val">90 天</span>
+          <span>有效學習累積：</span>
+          <span class="countdown-value" id="countdown-val">1 / 90 天</span>
         </div>
         <div class="streak-pill" id="streak-val">🔥 今日已刷 0 題</div>
       </div>
@@ -62,7 +62,7 @@
         </button>
         <div class="date-display-box" id="date-display-box">
           <span class="date-text" id="current-view-date">2026-10-31 (今天)</span>
-          <span class="date-sub-badge" id="date-sub-badge">第 1 天</span>
+          <span class="date-sub-badge" id="date-sub-badge">累積第 1 天</span>
         </div>
         <button class="btn-date-step" id="btn-next-day" title="後一天" disabled>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -73,7 +73,7 @@
 
       <!-- 歷史模式醒目標籤 (回顧過去日期時顯示) -->
       <div class="history-banner" id="history-banner" style="display: none;">
-        <span>📜 正在檢視歷史紀錄</span>
+        <span id="history-banner-text">📜 正在檢視歷史紀錄</span>
         <button class="btn-back-today" id="btn-back-today">返回今天 ➔</button>
       </div>
     </div>
