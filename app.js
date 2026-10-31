@@ -503,7 +503,6 @@ class PmpApp {
     });
 
     // 若在歷史回顧模式，且當天曾作答過這題，自動回放作答紀錄
-    const pastLog = this.userState.history[this.viewingDate];
     const pastRecord = pastLog && pastLog.duelAnswers && pastLog.duelAnswers[duel.id];
     if (pastRecord) {
       const pastBtn = this.el.duelContainer.querySelector(`[data-choice="${pastRecord.choice}"]`);
