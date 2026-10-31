@@ -82,6 +82,8 @@
 
 ## 🗺️ 五、 後續待辦與功能規劃清單 (Roadmap)
 
+- [x] **適配 iPhone 16 Pro Max 全螢幕 PWA**：加入 `env(safe-area-inset-top)` 與 `env(safe-area-inset-bottom)`，完美避開動態島 (Dynamic Island) 與底部橫條 (Home Bar)。
+- [x] **日期切換與歷史回顧功能 (History Mode)**：加入頂部日期切換列（前一天 ◀ / 後一天 ▶），支援查看過往每一天的刷題進度、自動回放當時答題結果與考官解析，隨時一鍵「返回今天」。
 - [ ] **題庫大量擴充**：依據 PMI ECO 三大領域（人 42%、流程 50%、商業環境 8%），逐步增加至 100+ 道經典通勤情境題。
 - [ ] **弱點錯題本 (Error Notebook)**：自動記錄做錯的題目，提供「通勤只刷錯題」專項複習模式。
 - [ ] **一鍵免費雲端部署**：部署至 Vercel / GitHub Pages，取得專屬專案網址，方便手機直接加入主畫面成為 PWA App。

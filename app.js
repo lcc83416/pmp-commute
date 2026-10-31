@@ -9,17 +9,33 @@ class PmpApp {
     this.radarIndex = 0;
     this.englishFirst = true; // 預設開啟「英文關鍵字優先模式」
     this.chineseRevealed = false;
+
+    // 當前瀏覽日期 (預設為今天)
+    this.todayStr = this.getLocalDateString();
+    this.viewingDate = this.todayStr;
     
     // 預設使用者數據
     this.userState = this.loadState() || {
+      startDate: this.todayStr,
       streakDays: 1,
       todayAnswered: 0,
       totalCorrect: 0,
       duelProgress: {},
       radarProgress: {},
+      history: {}, // 每日歷史存檔: { '2026-10-31': { answered: 5, correct: 4, duelAnswers: {...} } }
       targetDate: this.calculateTargetDate(90),
-      lastActiveDate: new Date().toISOString().split('T')[0]
+      lastActiveDate: this.todayStr
     };
+
+    // 確保 history 結構存在
+    if (!this.userState.history) this.userState.history = {};
+    if (!this.userState.history[this.todayStr]) {
+      this.userState.history[this.todayStr] = {
+        answered: this.userState.todayAnswered || 0,
+        correct: this.userState.totalCorrect || 0,
+        duelAnswers: {}
+      };
+    }
 
     this.audioContext = null;
     this.soundEnabled = true;
@@ -33,11 +49,26 @@ class PmpApp {
     this.renderCheatSheet();
   }
 
+  // 取得本地日期字串 YYYY-MM-DD
+  getLocalDateString(d = new Date()) {
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  // 日期加減天數
+  addDays(dateStr, days) {
+    const d = new Date(dateStr + 'T00:00:00');
+    d.setDate(d.getDate() + days);
+    return this.getLocalDateString(d);
+  }
+
   // 計算 90 天衝刺目標日
   calculateTargetDate(daysAhead) {
     const d = new Date();
     d.setDate(d.getDate() + daysAhead);
-    return d.toISOString().split('T')[0];
+    return this.getLocalDateString(d);
   }
 
   // 讀取進度
@@ -113,6 +144,14 @@ class PmpApp {
       progressFill: document.getElementById('progress-fill'),
       navButtons: document.querySelectorAll('.nav-item'),
       tabPanels: document.querySelectorAll('.tab-content'),
+
+      // 日期與歷史相關元件
+      currentViewDate: document.getElementById('current-view-date'),
+      dateSubBadge: document.getElementById('date-sub-badge'),
+      btnPrevDay: document.getElementById('btn-prev-day'),
+      btnNextDay: document.getElementById('btn-next-day'),
+      historyBanner: document.getElementById('history-banner'),
+      btnBackToday: document.getElementById('btn-back-today'),
       
       // Duel Elements
       duelContainer: document.getElementById('duel-panel-card'),
@@ -149,6 +188,25 @@ class PmpApp {
         this.switchTab(tab);
       });
     });
+
+    // 前一天 / 後一天 / 回到今天
+    if (this.el.btnPrevDay) {
+      this.el.btnPrevDay.addEventListener('click', () => {
+        this.changeViewingDate(-1);
+      });
+    }
+    if (this.el.btnNextDay) {
+      this.el.btnNextDay.addEventListener('click', () => {
+        this.changeViewingDate(1);
+      });
+    }
+    if (this.el.btnBackToday) {
+      this.el.btnBackToday.addEventListener('click', () => {
+        this.viewingDate = this.todayStr;
+        this.updateStatsUI();
+        this.renderDuel();
+      });
+    }
 
     // 關鍵字搜尋
     if (this.el.keywordSearch) {
@@ -219,14 +277,58 @@ class PmpApp {
     });
   }
 
+  changeViewingDate(delta) {
+    const nextDate = this.addDays(this.viewingDate, delta);
+    // 不能超過今天
+    if (nextDate > this.todayStr) return;
+    this.viewingDate = nextDate;
+    this.playTone('swipe');
+    this.updateStatsUI();
+    this.renderDuel();
+  }
+
   updateStatsUI() {
-    const today = new Date();
-    const target = new Date(this.userState.targetDate);
+    const today = new Date(this.todayStr + 'T00:00:00');
+    const target = new Date(this.userState.targetDate + 'T00:00:00');
     const diffTime = target - today;
     const diffDays = Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
 
+    // 計算第幾天
+    const start = new Date((this.userState.startDate || this.todayStr) + 'T00:00:00');
+    const current = new Date(this.viewingDate + 'T00:00:00');
+    const dayNumber = Math.max(1, Math.round((current - start) / (1000 * 60 * 60 * 24)) + 1);
+
+    const isToday = (this.viewingDate === this.todayStr);
+
     if (this.el.countdownVal) this.el.countdownVal.innerText = `${diffDays} 天`;
-    if (this.el.streakVal) this.el.streakVal.innerText = `🔥 今日已刷 ${this.userState.todayAnswered} 題`;
+    
+    // 取得當前檢視日期的紀錄
+    const dayLog = this.userState.history[this.viewingDate] || { answered: 0, correct: 0 };
+    const answeredCount = isToday ? this.userState.todayAnswered : dayLog.answered;
+
+    if (this.el.streakVal) {
+      this.el.streakVal.innerText = isToday 
+        ? `🔥 今日已刷 ${answeredCount} 題` 
+        : `📜 該日刷題 ${answeredCount} 題`;
+    }
+
+    // 更新日期文字與標籤
+    if (this.el.currentViewDate) {
+      this.el.currentViewDate.innerText = isToday ? `${this.viewingDate} (今天)` : `${this.viewingDate}`;
+    }
+    if (this.el.dateSubBadge) {
+      this.el.dateSubBadge.innerText = `第 ${dayNumber} 天`;
+    }
+
+    // 控制後一天按鈕是否禁用 (不能選未來的日期)
+    if (this.el.btnNextDay) {
+      this.el.btnNextDay.disabled = isToday;
+    }
+
+    // 歷史模式橫幅顯隱
+    if (this.el.historyBanner) {
+      this.el.historyBanner.style.display = isToday ? 'none' : 'flex';
+    }
 
     // 進度條比例 (以 100 題為里程碑計算)
     const progressPct = Math.min(100, Math.max(10, Math.round((this.userState.totalCorrect / 50) * 100)));
@@ -340,6 +442,50 @@ class PmpApp {
         this.handleDuelAnswer(btn.dataset.choice, duel);
       });
     });
+
+    // 若在歷史回顧模式，且當天曾作答過這題，自動回放作答紀錄
+    const pastLog = this.userState.history[this.viewingDate];
+    const pastRecord = pastLog && pastLog.duelAnswers && pastLog.duelAnswers[duel.id];
+    if (pastRecord) {
+      const pastBtn = this.el.duelContainer.querySelector(`[data-choice="${pastRecord.choice}"]`);
+      if (pastBtn) {
+        choiceButtons.forEach(b => b.disabled = true);
+        if (pastRecord.isCorrect) {
+          pastBtn.classList.add('correct');
+        } else {
+          pastBtn.classList.add('wrong');
+          const correctOpt = duel.optionA.isCorrect ? 'A' : 'B';
+          const correctBtn = this.el.duelContainer.querySelector(`[data-choice="${correctOpt}"]`);
+          if (correctBtn) correctBtn.classList.add('correct');
+        }
+
+        const feedbackSlot = document.getElementById('duel-feedback-slot');
+        feedbackSlot.innerHTML = `
+          <div class="explanation-card">
+            <div class="explanation-header">
+              <span>📜 歷史作答紀錄 (${this.viewingDate})：${pastRecord.isCorrect ? '當時答對 ✅' : '當時答錯 ❌'}</span>
+            </div>
+            <div style="font-weight: 700; color: #f8fafc; font-size: 13.5px; margin-bottom: 6px;">
+              ${duel.explanation.verdict}
+            </div>
+            <div class="explanation-mindset">
+              ${duel.explanation.mindset}
+            </div>
+            <div class="explanation-metaphor">
+              <strong>☕ 職場生活神譬喻：</strong><br/>
+              ${duel.explanation.metaphor}
+            </div>
+            <button class="btn-next-action" id="btn-next-duel">
+              看下一題 ➔
+            </button>
+          </div>
+        `;
+        document.getElementById('btn-next-duel').addEventListener('click', () => {
+          this.duelIndex = (this.duelIndex + 1) % this.data.duels.length;
+          this.renderDuel();
+        });
+      }
+    }
   }
 
   handleDuelAnswer(choice, duel) {
@@ -370,6 +516,20 @@ class PmpApp {
 
     this.userState.todayAnswered++;
     this.userState.duelProgress[duel.id] = isCorrect;
+
+    // 紀錄進當日歷史 Log
+    if (!this.userState.history[this.todayStr]) {
+      this.userState.history[this.todayStr] = { answered: 0, correct: 0, duelAnswers: {} };
+    }
+    this.userState.history[this.todayStr].answered = this.userState.todayAnswered;
+    if (isCorrect) {
+      this.userState.history[this.todayStr].correct = (this.userState.history[this.todayStr].correct || 0) + 1;
+    }
+    if (!this.userState.history[this.todayStr].duelAnswers) {
+      this.userState.history[this.todayStr].duelAnswers = {};
+    }
+    this.userState.history[this.todayStr].duelAnswers[duel.id] = { choice, isCorrect };
+
     this.saveState();
     this.updateStatsUI();
 
