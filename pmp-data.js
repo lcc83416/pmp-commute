@@ -1007,3 +1007,10 @@ window.PMP_DATA = {
   ]
 };
 
+// 確保向後相容舊版快取
+window.PMP_DATA.duels = window.PMP_DATA.questions;
+window.PMP_DATA.radars = [];
+window.PMP_DATA.keywords = [];
+window.PMP_DATA.goldenRules = [];
+
+

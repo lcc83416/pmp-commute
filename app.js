@@ -69,13 +69,54 @@ class PmpApp {
     };
   }
 
+  getAllQuestions() {
+    if (this.data && Array.isArray(this.data.questions) && this.data.questions.length > 0) {
+      return this.data.questions;
+    }
+    // 向下相容若舊版 pmp-data.js 快取
+    if (this.data && Array.isArray(this.data.duels) && this.data.duels.length > 0) {
+      return this.data.duels.map(d => ({
+        id: d.id,
+        category: "general",
+        categoryName: d.domainLabel || "核心情境",
+        domain: d.domain || "process",
+        domainLabel: d.domainLabel || "流程 (Process)",
+        title: d.title,
+        enScenario: d.enScenario,
+        cnScenario: d.cnScenario,
+        enKeywordNotice: "核心考點：注意情境關鍵字",
+        translationTrap: "🚨 考場翻譯防雷：請依據最後問句動詞判斷。",
+        options: [
+          { id: "A", enText: d.optionA.enText || "", text: d.optionA.text, isCorrect: d.optionA.isCorrect },
+          { id: "B", enText: d.optionB.enText || "", text: d.optionB.text, isCorrect: d.optionB.isCorrect },
+          { id: "C", enText: "Escalate the issue to executive steering committee.", text: "立即向上級指導委員會報告求助", isCorrect: false },
+          { id: "D", enText: "Postpone the decision until next sprint.", text: "暫停處理，推遲至下個衝刺再討論", isCorrect: false }
+        ],
+        explanation: {
+          verdict: d.explanation.verdict,
+          mindset: d.explanation.mindset,
+          fourOptions: {
+            A: d.optionA.isCorrect ? "【正解】符合最佳實踐。" : "【錯誤】非最佳行動。",
+            B: d.optionB.isCorrect ? "【正解】符合最佳實踐。" : "【錯誤】非最佳行動。",
+            C: "【踩雷】隨意向上升級問題。",
+            D: "【踩雷】逃避拖延問題。"
+          },
+          metaphor: d.explanation.metaphor,
+          keyEnAction: d.explanation.keyEnAction || ""
+        }
+      }));
+    }
+    return [];
+  }
+
   ensureTodayState() {
     if (!this.userState.history) this.userState.history = {};
     if (!this.userState.mockSessions) this.userState.mockSessions = [];
 
-    if (!this.userState.history[this.todayStr]) {
-      // 隨機抽選 20 題作為今日基礎題庫
-      const allQ = this.data.questions || [];
+    let todayLog = this.userState.history[this.todayStr];
+    const allQ = this.getAllQuestions();
+
+    if (!todayLog) {
       const shuffledIds = allQ.map(q => q.id).sort(() => 0.5 - Math.random());
       const baseQueue = shuffledIds.slice(0, Math.min(20, shuffledIds.length));
 
@@ -89,16 +130,29 @@ class PmpApp {
         completed: false
       };
       this.saveState();
+      return;
+    }
+
+    // 關鍵修復：相容舊版 LocalStorage 升級！若舊紀錄缺少 practiceQueue，自動補充 20 題
+    if (!todayLog.practiceQueue || !Array.isArray(todayLog.practiceQueue) || todayLog.practiceQueue.length === 0) {
+      const shuffledIds = allQ.map(q => q.id).sort(() => 0.5 - Math.random());
+      todayLog.practiceQueue = shuffledIds.slice(0, Math.min(20, shuffledIds.length));
+      todayLog.dailyGoal = todayLog.practiceQueue.length || 20;
+      todayLog.reinforcedCount = todayLog.reinforcedCount || 0;
+      todayLog.practiceAnswers = todayLog.practiceAnswers || {};
+      todayLog.answered = todayLog.answered || 0;
+      todayLog.correct = todayLog.correct || 0;
+      this.saveState();
     }
   }
 
   getInitialPracticeIndex() {
     const todayLog = this.userState.history[this.todayStr];
-    if (!todayLog || !todayLog.practiceQueue) return 0;
+    if (!todayLog || !todayLog.practiceQueue || todayLog.practiceQueue.length === 0) return 0;
     // 找到第一個尚未作答的題目索引
     const answeredKeys = Object.keys(todayLog.practiceAnswers || {});
     const idx = todayLog.practiceQueue.findIndex(id => !answeredKeys.includes(id));
-    return idx >= 0 ? idx : todayLog.practiceQueue.length;
+    return idx >= 0 ? idx : 0;
   }
 
   loadState() {
@@ -430,41 +484,66 @@ class PmpApp {
   // TAB 1: 每日考題邏輯 (4 選 1、刪去法、錯一補強、全解析)
   // ========================================================
   renderPractice() {
-    const isPast = (this.viewingDate !== this.todayStr);
-    if (isPast) {
-      this.renderHistoryPracticeReview();
-      return;
-    }
+    try {
+      const isPast = (this.viewingDate !== this.todayStr);
+      if (isPast) {
+        this.renderHistoryPracticeReview();
+        return;
+      }
 
-    const todayLog = this.userState.history[this.todayStr];
-    const totalGoal = todayLog.dailyGoal || 20;
-    const answeredCount = todayLog.answered || 0;
+      this.ensureTodayState();
+      const todayLog = this.userState.history[this.todayStr];
+      const allQ = this.getAllQuestions();
 
-    // 更新進度條
-    this.el.practiceProgressText.innerText = `${answeredCount} / ${totalGoal} 題`;
-    const fillPct = Math.min(100, Math.round((answeredCount / totalGoal) * 100));
-    this.el.practiceMicroFill.style.width = `${fillPct}%`;
+      if (!todayLog.practiceQueue || todayLog.practiceQueue.length === 0) {
+        todayLog.practiceQueue = allQ.map(q => q.id).slice(0, 20);
+        todayLog.dailyGoal = todayLog.practiceQueue.length;
+        this.saveState();
+      }
 
-    if (todayLog.reinforcedCount > 0) {
-      this.el.practiceReinforcedBadge.style.display = 'inline-block';
-      this.el.practiceReinforcedBadge.innerText = `+${todayLog.reinforcedCount} 弱點追補`;
-    } else {
-      this.el.practiceReinforcedBadge.style.display = 'none';
-    }
+      const queue = todayLog.practiceQueue;
+      const totalGoal = todayLog.dailyGoal || queue.length || 20;
+      const answeredCount = todayLog.answered || 0;
 
-    // 檢查是否已完成今天所有題目
-    const queue = todayLog.practiceQueue || [];
-    if (this.practiceIndex >= queue.length) {
-      this.renderPracticeAllDone();
-      return;
-    }
+      // 更新進度條
+      if (this.el.practiceProgressText) {
+        this.el.practiceProgressText.innerText = `${answeredCount} / ${totalGoal} 題`;
+      }
+      if (this.el.practiceMicroFill) {
+        const fillPct = Math.min(100, Math.round((answeredCount / totalGoal) * 100));
+        this.el.practiceMicroFill.style.width = `${fillPct}%`;
+      }
 
-    const currentQId = queue[this.practiceIndex];
-    const q = this.data.questions.find(item => item.id === currentQId);
-    if (!q) {
-      this.el.practiceSlot.innerHTML = `<div style="text-align: center; padding: 20px;">題庫載入中...</div>`;
-      return;
-    }
+      if (this.el.practiceReinforcedBadge) {
+        if (todayLog.reinforcedCount > 0) {
+          this.el.practiceReinforcedBadge.style.display = 'inline-block';
+          this.el.practiceReinforcedBadge.innerText = `+${todayLog.reinforcedCount} 弱點追補`;
+        } else {
+          this.el.practiceReinforcedBadge.style.display = 'none';
+        }
+      }
+
+      // 檢查是否真的完成今天所有題目 (必須至少做滿今日題數才算全做完)
+      if (this.practiceIndex >= queue.length && answeredCount >= totalGoal && queue.length > 0) {
+        this.renderPracticeAllDone();
+        return;
+      }
+
+      // 若索引超出但尚未答滿，重置回到第一個未作答題
+      if (this.practiceIndex >= queue.length) {
+        this.practiceIndex = this.getInitialPracticeIndex();
+      }
+
+      const currentQId = queue[this.practiceIndex] || queue[0];
+      let q = allQ.find(item => item.id === currentQId);
+      if (!q && allQ.length > 0) {
+        q = allQ[0];
+      }
+
+      if (!q) {
+        this.el.practiceSlot.innerHTML = `<div style="text-align: center; padding: 30px; color: var(--text-muted);">題庫讀取中，請稍候...</div>`;
+        return;
+      }
 
     // 重置目前被劃掉的選項
     this.struckOptions = {};
@@ -530,7 +609,19 @@ class PmpApp {
         this.handlePracticeAnswer(choiceId, q);
       });
     });
+  } catch (err) {
+    console.error('renderPractice failed', err);
+    if (this.el.practiceSlot) {
+      this.el.practiceSlot.innerHTML = `
+        <div class="practice-card" style="text-align: center; padding: 24px;">
+          <h3 style="margin-bottom: 8px;">載入題目發生異常</h3>
+          <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 12px;">系統已自動重置快取，點擊下方按鈕重新加載</p>
+          <button class="btn-primary" onclick="localStorage.removeItem('pmp_commute_user_state'); location.reload();">一鍵修復並重新整理</button>
+        </div>
+      `;
+    }
   }
+}
 
   handlePracticeAnswer(choiceId, q) {
     const todayLog = this.userState.history[this.todayStr];
