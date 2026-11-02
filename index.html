@@ -18,7 +18,7 @@
         <div class="logo-icon">P</div>
         <div>
           <div class="brand-title">PMP 通勤衝刺王</div>
-          <div class="brand-subtitle">通勤 90 天 • 無痛解題心法</div>
+          <div class="brand-subtitle">通勤 90 天 • 全真考場無痛通關</div>
         </div>
       </div>
       <div class="header-actions">
@@ -44,8 +44,8 @@
     <div class="stats-banner">
       <div class="countdown-row">
         <div class="countdown-label">
-          <span>有效學習累積：</span>
-          <span class="countdown-value" id="countdown-val">1 / 90 天</span>
+          <span>衝刺累積：</span>
+          <span class="countdown-value" id="countdown-val">1 / 90 有效天</span>
         </div>
         <div class="streak-pill" id="streak-val">🔥 今日已刷 0 題</div>
       </div>
@@ -61,7 +61,7 @@
           </svg>
         </button>
         <div class="date-display-box" id="date-display-box">
-          <span class="date-text" id="current-view-date">2026-10-31 (今天)</span>
+          <span class="date-text" id="current-view-date">2026-11-02 (今天)</span>
           <span class="date-sub-badge" id="date-sub-badge">累積第 1 天</span>
         </div>
         <button class="btn-date-step" id="btn-next-day" title="後一天" disabled>
@@ -73,7 +73,7 @@
 
       <!-- 歷史模式醒目標籤 (回顧過去日期時顯示) -->
       <div class="history-banner" id="history-banner" style="display: none;">
-        <span id="history-banner-text">📜 正在檢視歷史紀錄</span>
+        <span id="history-banner-text">📜 正在檢視歷史紀錄（純閱讀複習，不重新計分）</span>
         <button class="btn-back-today" id="btn-back-today">返回今天 ➔</button>
       </div>
     </div>
@@ -81,109 +81,221 @@
     <!-- Main Content Area -->
     <main class="app-main">
 
-      <!-- TAB 1: 二選一決鬥題 (預設) -->
-      <section class="tab-content active" id="tab-duel">
-        <div class="section-intro">
-          <h2 class="section-title">
-            <span>⚡ 二選一情境決鬥</span>
-          </h2>
-          <p class="section-desc">晃動公車也能單手作答！不做長篇大論，專練 PMP 考官直覺與神譬喻。</p>
-        </div>
-
-        <div class="duel-card" id="duel-panel-card">
-          <!-- 由 app.js 動態渲染 -->
-        </div>
-      </section>
-
-      <!-- TAB 2: 雷區判斷 (Tinder Swipe) -->
-      <section class="tab-content" id="tab-radar">
-        <div class="section-intro">
-          <h2 class="section-title">
-            <span>💣 考官雷區 vs 最愛</span>
-          </h2>
-          <p class="section-desc">捷運上快速滑動，秒辨識哪些選項是 100% 陷阱、哪些是保證得分項！</p>
-        </div>
-
-        <div class="radar-arena">
-          <div class="radar-card-container" id="radar-card-container">
-            <!-- 由 app.js 動態渲染 -->
+      <!-- TAB 1: 每日考題 (基礎 20 題 + 錯一補強 + 刪去法 + 全選項解析) -->
+      <section class="tab-content active" id="tab-practice">
+        <div class="practice-header-bar">
+          <div class="practice-progress-box">
+            <div class="practice-target-label">
+              <span>今日進度：</span>
+              <strong id="practice-progress-text">0 / 20 題</strong>
+              <span class="badge-reinforced" id="practice-reinforced-badge" style="display: none;">+2 弱點追補</span>
+            </div>
+            <div class="practice-micro-bar">
+              <div class="practice-micro-fill" id="practice-micro-fill" style="width: 0%;"></div>
+            </div>
           </div>
-          <div class="radar-feedback" id="radar-feedback" style="display: none; width: 100%;"></div>
+          <button class="btn-call-day" id="btn-finish-day" title="累了隨時收工，未完成不累積到明天">
+            <span>☕ 今天先這樣</span>
+          </button>
+        </div>
+
+        <div id="practice-card-slot">
+          <!-- 由 app.js 動態渲染 4 選 1 考題 -->
         </div>
       </section>
 
-      <!-- TAB 3: 同事傳授英文高頻關鍵字 -->
-      <section class="tab-content" id="tab-keywords">
-        <div class="section-intro">
-          <h2 class="section-title">
-            <span>🔑 高頻關鍵字雷達</span>
-          </h2>
-          <p class="section-desc">同事說的「看關鍵字」秘訣！中英雙語對照＋白話神譬喻，不用硬背單字。</p>
+      <!-- TAB 2: PMP 模擬題 (短跑局制 + 暫停防呆 + 速度測量) -->
+      <section class="tab-content" id="tab-mock">
+        <!-- 狀態 A：尚未開始 (短跑局準備畫面) -->
+        <div class="mock-welcome-card" id="mock-welcome-card">
+          <div class="mock-welcome-icon">⏱️</div>
+          <h2 class="mock-welcome-title">PMP 全真考場短跑局</h2>
+          <p class="mock-welcome-desc">
+            針對零碎通勤設計：隨時開始、隨時暫停、寫多少算多少！<br/>
+            精準測量平均答題秒數（考場及格標準：<strong>76 秒 / 題</strong>），鍛鍊直覺反射。
+          </p>
+
+          <div class="mock-features-grid">
+            <div class="feature-tag">⚡ 即時秒數測速</div>
+            <div class="feature-tag">⏸️ 下車隨時暫停</div>
+            <div class="feature-tag">🗑️ 忘記暫停可作廢</div>
+            <div class="feature-tag">🚩 標記待查 (Flag)</div>
+          </div>
+
+          <button class="btn-start-mock" id="btn-start-mock">
+            <span>▶️ 開始短跑局測驗</span>
+          </button>
+
+          <!-- 今日模擬局數快覽 -->
+          <div class="mock-today-summary" id="mock-today-summary">
+            <!-- 由 app.js 動態生成今日局數簡介 -->
+          </div>
         </div>
 
-        <div class="keyword-search-bar">
-          <input type="text" id="keyword-search-input" class="keyword-input" placeholder="🔍 搜尋英文或中文關鍵字 (例如: servant, 範疇)...">
-        </div>
+        <!-- 狀態 B：測驗進行中 (Pearson VUE 仿真介面) -->
+        <div class="mock-active-arena" id="mock-active-arena" style="display: none;">
+          <!-- 頂部計時控制列 -->
+          <div class="mock-control-bar">
+            <div class="mock-timer-group">
+              <div class="mock-timer-display" id="mock-timer-display">⏱️ 00:00</div>
+              <div class="mock-speed-badge" id="mock-speed-badge">⚡ 平均 0 秒/題</div>
+            </div>
+            <div class="mock-action-buttons">
+              <button class="btn-mock-ctrl" id="btn-mock-pause">暫停</button>
+              <button class="btn-mock-ctrl btn-mock-end" id="btn-mock-finish">結束交卷</button>
+              <button class="btn-mock-ctrl btn-mock-cancel" id="btn-mock-discard" title="作廢本次數據">忽略本次</button>
+            </div>
+          </div>
 
-        <div class="keyword-list" id="keyword-list">
-          <!-- 由 app.js 動態渲染 -->
+          <!-- 仿真考題容器 -->
+          <div class="mock-question-container" id="mock-question-slot">
+            <!-- 由 app.js 動態生成 -->
+          </div>
+
+          <!-- 暫停時的半透明防呆遮罩 -->
+          <div class="mock-pause-overlay" id="mock-pause-overlay" style="display: none;">
+            <div class="pause-modal-box">
+              <div style="font-size: 32px; margin-bottom: 8px;">⏸️</div>
+              <h3>測驗已暫停</h3>
+              <p>時間已完全凍結，下車或走動不會計入思考秒數。<br/>就座後點擊下方按鈕繼續作答。</p>
+              <button class="btn-resume-mock" id="btn-mock-resume">▶️ 繼續測驗</button>
+            </div>
+          </div>
         </div>
       </section>
 
-      <!-- TAB 4: 考官十大黃金鐵律 (Cheat Sheet) -->
-      <section class="tab-content" id="tab-rules">
+      <!-- TAB 3: 統計日曆 (每日考題 vs 模擬考分開統計) -->
+      <section class="tab-content" id="tab-stats">
         <div class="section-intro">
           <h2 class="section-title">
-            <span>📜 考官心法速查表</span>
+            <span>📊 學習統計與戰報日曆</span>
           </h2>
-          <p class="section-desc">上考場前刻進 DNA 的 10 條解題定律，遇事不決直接套用！</p>
+          <p class="section-desc">每日考題與 PMP 模擬測速分開獨立統計，數據客觀不混淆！</p>
         </div>
 
-        <div class="rules-list" id="cheat-sheet-list">
-          <!-- 由 app.js 動態渲染 -->
+        <!-- 日曆速查卡片 (顯示近 7~14 天的學習足跡) -->
+        <div class="calendar-card-section">
+          <div class="calendar-header-title">📅 學習足跡日曆</div>
+          <div class="calendar-strip" id="calendar-strip">
+            <!-- 由 app.js 動態生成日期卡片 -->
+          </div>
+          <div class="calendar-selected-detail" id="calendar-selected-detail">
+            <!-- 點擊某一天的詳細數據卡 -->
+          </div>
         </div>
+
+        <!-- 獨立區塊 1：每日考題大數據 -->
+        <div class="stats-category-card green-card">
+          <div class="cat-header">
+            <span class="cat-icon">🎯</span>
+            <div>
+              <h3 class="cat-title">每日考題累積戰力</h3>
+              <div class="cat-subtitle">通勤日常累積 • 強化神經迴路</div>
+            </div>
+          </div>
+          <div class="cat-stats-grid">
+            <div class="stat-box">
+              <div class="stat-number" id="stats-practice-total">0</div>
+              <div class="stat-caption">累積做題量</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-number" id="stats-practice-accuracy">0%</div>
+              <div class="stat-caption">總體命中率</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-number" id="stats-practice-days">0 天</div>
+              <div class="stat-caption">有效學習日</div>
+            </div>
+          </div>
+          <div class="domain-bars-wrapper">
+            <div class="domain-bar-item">
+              <div class="domain-bar-label"><span>👥 人 (People 42%)</span><span id="domain-acc-people">0%</span></div>
+              <div class="domain-bar-track"><div class="domain-bar-fill" id="domain-fill-people" style="width: 0%;"></div></div>
+            </div>
+            <div class="domain-bar-item">
+              <div class="domain-bar-label"><span>⚙️ 流程 (Process 50%)</span><span id="domain-acc-process">0%</span></div>
+              <div class="domain-bar-track"><div class="domain-bar-fill" id="domain-fill-process" style="width: 0%;"></div></div>
+            </div>
+            <div class="domain-bar-item">
+              <div class="domain-bar-label"><span>🏢 商業環境 (Business 8%)</span><span id="domain-acc-business">0%</span></div>
+              <div class="domain-bar-track"><div class="domain-bar-fill" id="domain-fill-business" style="width: 0%;"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 獨立區塊 2：PMP 模擬測速紀錄 -->
+        <div class="stats-category-card blue-card">
+          <div class="cat-header">
+            <span class="cat-icon">⏱️</span>
+            <div>
+              <h3 class="cat-title">PMP 全真模擬測速紀錄</h3>
+              <div class="cat-subtitle">短跑局統計 • 嚴格把關 76 秒合格線</div>
+            </div>
+          </div>
+          <div class="cat-stats-grid">
+            <div class="stat-box">
+              <div class="stat-number" id="stats-mock-sessions">0 局</div>
+              <div class="stat-caption">累積進行局數</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-number" id="stats-mock-questions">0 題</div>
+              <div class="stat-caption">測驗總題數</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-number" id="stats-mock-speed">0 秒</div>
+              <div class="stat-caption">綜合平均秒數</div>
+            </div>
+          </div>
+          <div class="mock-history-list" id="mock-history-list">
+            <!-- 由 app.js 動態生成歷次短跑清單 -->
+          </div>
+        </div>
+
       </section>
 
     </main>
 
-    <!-- Bottom Navigation Bar (拇指專用) -->
+    <!-- Bottom Navigation Bar (拇指專用，極簡 3 頁籤) -->
     <nav class="bottom-nav">
-      <button class="nav-item active" data-tab="duel">
+      <button class="nav-item active" data-tab="practice">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
           <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
         </svg>
-        <span>二選一</span>
+        <span>每日考題</span>
       </button>
 
-      <button class="nav-item" data-tab="radar">
+      <button class="nav-item" data-tab="mock">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
           <circle cx="12" cy="12" r="10"></circle>
-          <line x1="22" y1="12" x2="18" y2="12"></line>
-          <line x1="6" y1="12" x2="2" y2="12"></line>
-          <line x1="12" y1="6" x2="12" y2="2"></line>
-          <line x1="12" y1="22" x2="12" y2="18"></line>
+          <polyline points="12 6 12 12 16 14"></polyline>
         </svg>
-        <span>雷區卡</span>
+        <span>PMP 模擬</span>
       </button>
 
-      <button class="nav-item" data-tab="keywords">
+      <button class="nav-item" data-tab="stats">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
         </svg>
-        <span>關鍵字</span>
-      </button>
-
-      <button class="nav-item" data-tab="rules">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-          <polyline points="14 2 14 8 20 8"></polyline>
-          <line x1="16" y1="13" x2="8" y2="13"></line>
-          <line x1="16" y1="17" x2="8" y2="17"></line>
-          <polyline points="10 9 9 9 8 9"></polyline>
-        </svg>
-        <span>心法表</span>
+        <span>統計日曆</span>
       </button>
     </nav>
+
+    <!-- 模擬考結算彈窗 (Mock Result Modal) -->
+    <div class="modal-overlay" id="mock-result-modal">
+      <div class="modal-box">
+        <h3 class="modal-title">🏁 本局模擬測驗成果</h3>
+        <div class="mock-result-content" id="mock-result-summary">
+          <!-- 由 app.js 動態填充結算資訊 -->
+        </div>
+        <div class="modal-actions" style="margin-top: 16px;">
+          <button class="btn-primary" id="btn-save-mock-result" style="flex: 1;">💾 儲存戰績</button>
+          <button class="btn-danger-outline" id="btn-discard-mock-result" style="flex: 1;">🗑️ 忘記暫停？作廢本次</button>
+        </div>
+      </div>
+    </div>
 
     <!-- 跨裝置同步彈窗 (Sync Modal) -->
     <div class="modal-overlay" id="sync-modal">
