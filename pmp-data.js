@@ -1,5 +1,6 @@
 // PMP 全真實戰情境題庫與知識體系 (依據 PMI-ECO 最新大綱設計)
 // 包含：4 選 1 標準考題、4 選項逐一深度剖析、考場翻譯避坑提示、職場生活神譬喻、關鍵動詞
+// 選項自然均勻分佈於 A, B, C, D 各選項，徹底排除固定選項規律
 
 window.PMP_DATA = {
   // 標準題庫 (每題包含分類 category，支援「錯一追補同類題」)
@@ -18,15 +19,15 @@ window.PMP_DATA = {
       options: [
         {
           id: "A",
-          enText: "Pause the standup and meet with both individuals privately to understand the root cause.",
-          text: "暫停晨會，私下分別找兩人個別面談以釐清爭端根本原因 (Root Cause)",
-          isCorrect: true
-        },
-        {
-          id: "B",
           enText: "Immediately report the conflict to functional department heads for disciplinary action.",
           text: "立即向雙方部門主管報告，要求主管介入懲處與協調",
           isCorrect: false
+        },
+        {
+          id: "B",
+          enText: "Pause the standup and meet with both individuals privately to understand the root cause.",
+          text: "暫停晨會，私下分別找兩人個別面談以釐清爭端根本原因 (Root Cause)",
+          isCorrect: true
         },
         {
           id: "C",
@@ -45,8 +46,8 @@ window.PMP_DATA = {
         verdict: "面對衝突，考官痛恨隨便告狀與公開羞辱，提倡私下合作解決！",
         mindset: "PMP 衝突處理黃金原則：面對公開激烈爭執，PM 應先中止公開鬧劇以保護團隊（Shield the team），接著私下與雙方分別會談（Private discussion），找出衝突根因（Root Cause Analysis）。",
         fourOptions: {
-          A: "【正解】私下會談能維護成員自尊，探詢根本原因才能徹底化解矛盾。",
-          B: "【踩雷：越級呈報 (Escalate)】PMP 考官極度討厭把問題往上丟給長官，這是推卸責任的表現。",
+          A: "【踩雷：越級呈報 (Escalate)】PMP 考官極度討厭把問題往上丟給長官，這是推卸責任的表現。",
+          B: "【正解】私下會談能維護成員自尊，探詢根本原因才能徹底化解矛盾。",
           C: "【踩雷：放任不管】晨會只有 15 分鐘，放任爭吵只會浪費全員時間並破壞士氣。",
           D: "【踩雷：專制裁決 (Forcing)】PM 在敏捷中不是技術法官，強壓命令會埋下日後更大的對立。"
         },
@@ -68,9 +69,9 @@ window.PMP_DATA = {
       options: [
         {
           id: "A",
-          enText: "Instruct developer to follow Change Control Process and assess impact first.",
-          text: "要求工程師暫緩，告知客戶需遵循正式變更控制流程，並先評估對時程與成本的衝擊",
-          isCorrect: true
+          enText: "File a formal grievance against the client to the Project Sponsor.",
+          text: "立即向專案贊助人 (Sponsor) 投訴客戶越權干涉技術團隊",
+          isCorrect: false
         },
         {
           id: "B",
@@ -86,19 +87,19 @@ window.PMP_DATA = {
         },
         {
           id: "D",
-          enText: "File a formal grievance against the client to the Project Sponsor.",
-          text: "立即向專案贊助人 (Sponsor) 投訴客戶越權干涉技術團隊",
-          isCorrect: false
+          enText: "Instruct developer to follow Change Control Process and assess impact first.",
+          text: "要求工程師暫緩，告知客戶需遵循正式變更控制流程，並先評估對時程與成本的衝擊",
+          isCorrect: true
         }
       ],
       explanation: {
         verdict: "範疇蔓延 (Scope Creep) 是專案毒藥，萬變不離變更流程！",
         mindset: "任何未經正式審查的新需求，不管對方官階多大、耗時多短，都必須導入【整合變更控制 (Integrated Change Control)】。先評估影響 (Assess Impact)，再送交審查 (CCB/Sponsor)。",
         fourOptions: {
-          A: "【正解】引導客戶走正規流程，並主動評估影響，既專業又合規。",
+          A: "【踩雷：過度反應】客戶提需求很正常，告知流程即可，不需要上升到告狀階層。",
           B: "【踩雷：私下加料】這是最經典的失分選項！10分鐘的小改動積少成多，最後就是專案延遲爆預算。",
           C: "【踩雷：僵化拒絕】PMP 強調客戶價值，不能無情拒絕，而是要透過變更流程讓變更透明化。",
-          D: "【踩雷：過度反應】客戶提需求很正常，告知流程即可，不需要上升到告狀階層。"
+          D: "【正解】引導客戶走正規流程，並主動評估影響，既專業又合規。"
         },
         metaphor: "幫同事買午餐乾麵，他半路傳訊說順便加滷蛋貢丸加奶茶。如果你每次都私下說好，最後專案一定延遲爆預算還自己倒貼！",
         keyEnAction: "Follow Change Control Procedure & Assess Impact FIRST"
@@ -168,9 +169,9 @@ window.PMP_DATA = {
       options: [
         {
           id: "A",
-          enText: "Take ownership to contact the vendor and remove the impediment for the team.",
-          text: "主動介入接洽該外部廠商，全力替工程師掃除外部阻礙 (Remove Impediment)",
-          isCorrect: true
+          enText: "Take over the developer's workstation and write the backend code yourself.",
+          text: "PM 親自跳下去接管工程師的電腦，自己動手把程式碼寫完",
+          isCorrect: false
         },
         {
           id: "B",
@@ -180,9 +181,9 @@ window.PMP_DATA = {
         },
         {
           id: "C",
-          enText: "Take over the developer's workstation and write the backend code yourself.",
-          text: "PM 親自跳下去接管工程師的電腦，自己動手把程式碼寫完",
-          isCorrect: false
+          enText: "Take ownership to contact the vendor and remove the impediment for the team.",
+          text: "主動介入接洽該外部廠商，全力替工程師掃除外部阻礙 (Remove Impediment)",
+          isCorrect: true
         },
         {
           id: "D",
@@ -195,9 +196,9 @@ window.PMP_DATA = {
         verdict: "敏捷 PM 不是監工，天職是為團隊『掃除障礙 (Remove Impediments)』！",
         mindset: "僕人式領導的核心精神：保護團隊免受外界干擾（Shielding the team），主動清除外部障礙（Remove impediments），讓自組織團隊專注於價值交付。",
         fourOptions: {
-          A: "【正解】PM 負責對外協調、搬開阻礙，讓技術團隊全心開發，這是僕人領導標準答案。",
+          A: "【踩雷：角色錯位】PM 不是打手或代班工程師，跳下去寫 Code 會失去全局協調能力。",
           B: "【踩雷：血汗監工】敏捷推崇可持續步伐 (Sustainable Pace)，逼人加班違反敏捷精神。",
-          C: "【踩雷：角色錯位】PM 不是打手或代班工程師，跳下去寫 Code 會失去全局協調能力。",
+          C: "【正解】PM 負責對外協調、搬開阻礙，讓技術團隊全心開發，這是僕人領導標準答案。",
           D: "【踩雷：過度反應】只有在 Sprint 目標徹底失去價值時 PO 才能取消衝刺，遇到 API 延遲不應盲目取消。"
         },
         metaphor: "你不是跑在賽道上的賽車手，你是進站維修保養團隊，賽車輪胎卡了石頭，你趕快把石頭搬開讓車手全速衝刺！",
@@ -218,15 +219,15 @@ window.PMP_DATA = {
       options: [
         {
           id: "A",
-          enText: "Assess the impact of the new regulation on project scope, timeline, and deliverables.",
-          text: "先全面評估新法規對現有專案範疇、驗收標準與時程預算的具體衝擊 (Assess Impact)",
-          isCorrect: true
-        },
-        {
-          id: "B",
           enText: "Immediately halt all project development until the legal department provides guidance.",
           text: "立即暫停專案所有開發工作，等待公司法務部門發布正式指導方針",
           isCorrect: false
+        },
+        {
+          id: "B",
+          enText: "Assess the impact of the new regulation on project scope, timeline, and deliverables.",
+          text: "先全面評估新法規對現有專案範疇、驗收標準與時程預算的具體衝擊 (Assess Impact)",
+          isCorrect: true
         },
         {
           id: "C",
@@ -245,8 +246,8 @@ window.PMP_DATA = {
         verdict: "風吹草動萬用起手式：永遠是先『評估影響 (Assess Impact)』！",
         mindset: "PMP 考官直覺定律：遇到法規變動、利害關係人質疑或環境變化，第一步永遠是分析評估 (Analyze / Assess Impact)。沒有評估數據就做動作，都是盲動！",
         fourOptions: {
-          A: "【正解】搞清楚法規到底影響哪些模組、需要改動多少工期，才有事實依據提後續對策。",
-          B: "【踩雷：恐慌停工】還沒弄清楚影響範圍就全面停工，會造成無謂的成本浪費。",
+          A: "【踩雷：恐慌停工】還沒弄清楚影響範圍就全面停工，會造成無謂的成本浪費。",
+          B: "【正解】搞清楚法規到底影響哪些模組、需要改動多少工期，才有事實依據提後續對策。",
           C: "【踩雷：順序錯亂】連要改多少東西都不知道，就伸手跟主管要錢，絕對會被退回。",
           D: "【踩雷：違法忽視】合規性 (Compliance) 具有法律強制力，專案交付違法產物是零分做法。"
         },
@@ -318,9 +319,9 @@ window.PMP_DATA = {
       options: [
         {
           id: "A",
-          enText: "Analyze compression options (crashing or fast-tracking) and present trade-offs to the sponsor.",
-          text: "評估時程壓縮方案（如快速跟進並行或趕工加資源），並向贊助人分析代價與風險方案",
-          isCorrect: true
+          enText: "Secretly cut quality testing cycles to hit the new deadline without telling anyone.",
+          text: "為了趕上限期，暗中縮減品質驗證與安全測試環節以節省時間",
+          isCorrect: false
         },
         {
           id: "B",
@@ -336,19 +337,19 @@ window.PMP_DATA = {
         },
         {
           id: "D",
-          enText: "Secretly cut quality testing cycles to hit the new deadline without telling anyone.",
-          text: "為了趕上限期，暗中縮減品質驗證與安全測試環節以節省時間",
-          isCorrect: false
+          enText: "Analyze compression options (crashing or fast-tracking) and present trade-offs to the sponsor.",
+          text: "評估時程壓縮方案（如快速跟進並行或趕工加資源），並向贊助人分析代價與風險方案",
+          isCorrect: true
         }
       ],
       explanation: {
         verdict: "面對高層施壓，專業 PM 提供數據分析與選項，而不是盲目承諾！",
         mindset: "時程要壓縮，根據專案三角約束（時間、成本、範疇），縮短時間必定要增加成本（Crashing 趕工）或承擔重工風險（Fast-tracking 並行），甚至需刪減次要功能。PM 的職責是分析各方案利弊供出資者選擇。",
         fourOptions: {
-          A: "【正解】專業呈現趕工與並行的成本與風險，讓老闆做有數據依據的商業決策。",
+          A: "【踩雷：偷工減料】暗中犧牲品質 (Quality) 在 PMP 考題是犯罪級的踩雷選項！",
           B: "【踩雷：盲目屈從】不評估就硬逼大家加班，會導致團隊士氣崩盤並引發嚴重離職潮。",
           C: "【踩雷：僵硬對立】出資人有權利調整商業目標，PM 應配合分析方案而非直接拒絕對話。",
-          D: "【踩雷：偷工減料】暗中犧牲品質 (Quality) 在 PMP 考題是犯罪級的踩雷選項！"
+          D: "【正解】專業呈現趕工與並行的成本與風險，讓老闆做有數據依據的商業決策。"
         },
         metaphor: "裝潢房子屋主要提早交屋，你不是逼工班不睡覺連續幹三天，而是告訴屋主：『提早交屋可以，需要多請三組水電工（加預算），或者二樓木地板等搬進去再做（砍範疇）。』",
         keyEnAction: "Analyze Schedule Compression Options (Crashing / Fast-tracking)"
@@ -368,9 +369,9 @@ window.PMP_DATA = {
       options: [
         {
           id: "A",
-          enText: "Execute the planned risk response and utilize the contingency reserve.",
-          text: "立即啟動預先核准的風險應變對策，並動用預留的應急儲備金 (Contingency Reserve)",
-          isCorrect: true
+          enText: "Remove the hardware from the project scope to avoid any cost overrun.",
+          text: "直接將該硬體從專案範疇中刪除，以避免產生任何成本超支",
+          isCorrect: false
         },
         {
           id: "B",
@@ -380,9 +381,9 @@ window.PMP_DATA = {
         },
         {
           id: "C",
-          enText: "Remove the hardware from the project scope to avoid any cost overrun.",
-          text: "直接將該硬體從專案範疇中刪除，以避免產生任何成本超支",
-          isCorrect: false
+          enText: "Execute the planned risk response and utilize the contingency reserve.",
+          text: "立即啟動預先核准的風險應變對策，並動用預留的應急儲備金 (Contingency Reserve)",
+          isCorrect: true
         },
         {
           id: "D",
@@ -395,9 +396,9 @@ window.PMP_DATA = {
         verdict: "既然當初已經未雨綢繆，事情發生就照計畫果斷執行！",
         mindset: "這是風險管理考題的標準套路：已識別風險 (Identified Risk) 發生時，如果有預擬的應對策略 (Contingency Plan)，直接啟動並動用應急儲備 (Contingency Reserve)。",
         fourOptions: {
-          A: "【正解】這就是當初做風險管理的目的：狀況來了立刻照表操課，有條不紊。",
+          A: "【踩雷：因噎廢食】核心元件刪掉專案根本無法運作，不能隨意犧牲專案目標。",
           B: "【踩雷：重新瞎忙】明明抽屜裡有應急劇本，卻要大家重新坐下來大眼瞪小眼發想，浪費時間。",
-          C: "【踩雷：因噎廢食】核心元件刪掉專案根本無法運作，不能隨意犧牲專案目標。",
+          C: "【正解】這就是當初做風險管理的目的：狀況來了立刻照表操課，有條不紊。",
           D: "【踩雷：無理耍賴】如果合約不是固定總價全包，強壓廠商只會導致廠商違約停擺。"
         },
         metaphor: "出門前看氣象預報會下雨所以包包放了雨傘（預擬對策）。真的下雨時，把傘拿出來撐開就好，不需要停在路邊開家庭會議討論『下雨了怎麼辦』！",
@@ -468,15 +469,15 @@ window.PMP_DATA = {
       options: [
         {
           id: "A",
-          enText: "Review the Communications Management Plan to verify the stakeholder's needs and update it.",
-          text: "檢視【溝通管理計畫】，確認該利害關係人的資訊需求是否有遺漏，並隨之更新",
-          isCorrect: true
-        },
-        {
-          id: "B",
           enText: "Blame your project assistant publicly for forgetting to send the email.",
           text: "當眾斥責專案助理粗心大意，把責任推給助理漏發信件",
           isCorrect: false
+        },
+        {
+          id: "B",
+          enText: "Review the Communications Management Plan to verify the stakeholder's needs and update it.",
+          text: "檢視【溝通管理計畫】，確認該利害關係人的資訊需求是否有遺漏，並隨之更新",
+          isCorrect: true
         },
         {
           id: "C",
@@ -495,8 +496,8 @@ window.PMP_DATA = {
         verdict: "有人抱怨資訊不通，根源就是溝通計畫有盲點！",
         mindset: "利害關係人資訊脫節，第一步永遠是回頭檢查溝通管理計畫 (Communications Management Plan) 與利害關係人參與計畫 (Stakeholder Engagement Plan)。確認對象、頻率、傳遞方式是否符合需求。",
         fourOptions: {
-          A: "【正解】有憑有據查計畫，找出當初是漏列了該經理，還是寄錯格式，及時補救更新。",
-          B: "【踩雷：卸責推拖】專業 PM 承擔全局責任，絕不在公眾場合找戰犯甩鍋。",
+          A: "【踩雷：卸責推拖】專業 PM 承擔全局責任，絕不在公眾場合找戰犯甩鍋。",
+          B: "【正解】有憑有據查計畫，找出當初是漏列了該經理，還是寄錯格式，及時補救更新。",
           C: "【踩雷：資訊轟炸】營運高層要的是高階發布里程碑，不是每天聽工程師報 Bug 細節，亂拉進晨會只會浪費大家時間。",
           D: "【踩雷：忽視利害關係人】營運團隊負責上線後的系統維運，得罪營運經理只會導致日後交付被卡關。"
         },
@@ -518,9 +519,9 @@ window.PMP_DATA = {
       options: [
         {
           id: "A",
-          enText: "Collaborate with the team to develop or update a Team Charter.",
-          text: "與團隊共同制定或更新【團隊章程 (Team Charter)】，確立行為規範與溝通公約",
-          isCorrect: true
+          enText: "Discontinue all virtual meetings and rely solely on written documentation.",
+          text: "取消所有視訊會議，全面改成純文字郵件往來以避免摩擦",
+          isCorrect: false
         },
         {
           id: "B",
@@ -536,19 +537,19 @@ window.PMP_DATA = {
         },
         {
           id: "D",
-          enText: "Discontinue all virtual meetings and rely solely on written documentation.",
-          text: "取消所有視訊會議，全面改成純文字郵件往來以避免摩擦",
-          isCorrect: false
+          enText: "Collaborate with the team to develop or update a Team Charter.",
+          text: "與團隊共同制定或更新【團隊章程 (Team Charter)】，確立行為規範與溝通公約",
+          isCorrect: true
         }
       ],
       explanation: {
         verdict: "團隊內部要有規矩，必須由全員共同制定 Team Charter！",
         mindset: "團隊章程 (Team Charter) 是團隊共同建立的工作守則，涵蓋價值觀、溝通準則、決策流程與衝突化解機制。由團隊共同產出才能帶來真正的自我約束力。",
         fourOptions: {
-          A: "【正解】團隊章程由成員共創，解決文化差異與行為規範的最佳工具。",
+          A: "【踩雷：阻斷溝通】文字往來缺乏語氣表情，跨文化下更容易產生誤會。",
           B: "【踩雷：專制傲慢】忽視文化多樣性 (Diversity)，只會引發更嚴重的內部反彈。",
           C: "【踩雷：逃避問題】動輒換人成本極高，也缺乏身為 PM 的包容與領導力。",
-          D: "【踩雷：阻斷溝通】文字往來缺乏語氣表情，跨文化下更容易產生誤會。"
+          D: "【正解】團隊章程由成員共創，解決文化差異與行為規範的最佳工具。"
         },
         metaphor: "跟室友合租公寓，大家生活習慣不同，最好的方式是一起坐下來寫一張『生活公約（洗澡順序、丟垃圾輪值）』，而不是房東直接下命令罰錢！",
         keyEnAction: "Develop / Update Team Charter Collaboratively"
@@ -568,9 +569,9 @@ window.PMP_DATA = {
       options: [
         {
           id: "A",
-          enText: "This is Gold Plating; the PM should instruct the engineer to align strictly with the approved scope baseline.",
-          text: "這是【鍍金 (Gold Plating)】；PM 應要求工程師嚴格依據已核准的範疇基準執行，並移除未核准功能",
-          isCorrect: true
+          enText: "Keep the animation and demand that the client pay extra budget for it.",
+          text: "保留該 3D 動畫，並要求客戶為這項驚喜功能追加專案預算",
+          isCorrect: false
         },
         {
           id: "B",
@@ -580,9 +581,9 @@ window.PMP_DATA = {
         },
         {
           id: "C",
-          enText: "Keep the animation and demand that the client pay extra budget for it.",
-          text: "保留該 3D 動畫，並要求客戶為這項驚喜功能追加專案預算",
-          isCorrect: false
+          enText: "This is Gold Plating; the PM should instruct the engineer to align strictly with the approved scope baseline.",
+          text: "這是【鍍金 (Gold Plating)】；PM 應要求工程師嚴格依據已核准的範疇基準執行，並移除未核准功能",
+          isCorrect: true
         },
         {
           id: "D",
@@ -595,9 +596,9 @@ window.PMP_DATA = {
         verdict: "PMP 考官嚴格禁止【鍍金 (Gold Plating)】，只做講好的事！",
         mindset: "鍍金指未經正式變更程序，私自加入客戶沒要求的額外功能。這不僅浪費專案資源與工時，更可能引入未知的 Bug 或效能瓶頸。PM 必須依循已核准的範疇基準 (Scope Baseline) 交付。",
         fourOptions: {
-          A: "【正解】確認符合範疇基準，杜絕私自加料，保證交付品質與穩定度。",
+          A: "【踩雷：強迫中獎】客戶沒要求你私自做，還回頭跟客戶要錢，嚴重損害商譽。",
           B: "【踩雷：鼓勵歪風】在 PMP 考試中，超額贈送未授權功能是嚴重錯誤。",
-          C: "【踩雷：強迫中獎】客戶沒要求你私自做，還回頭跟客戶要錢，嚴重損害商譽。",
+          C: "【正解】確認符合範疇基準，杜絕私自加料，保證交付品質與穩定度。",
           D: "【踩雷：倒果為因】效能已經卡頓，未經測試就補流程等於草菅人命。"
         },
         metaphor: "你去修車廠只想換機油，修車師傅自作主張幫你改了喧鬧的排氣管還說送你的，結果上路吵死人還被警察開單！這就叫鍍金。",
@@ -618,15 +619,15 @@ window.PMP_DATA = {
       options: [
         {
           id: "A",
-          enText: "Assess the impact on deliverables and review the Risk Register for contingency staffing plans.",
-          text: "評估其未完成工作對專案的衝擊，並查閱風險登記冊中的人員替補應變方案 (Assess Impact)",
-          isCorrect: true
-        },
-        {
-          id: "B",
           enText: "Force the specialist to stay until project completion by withholding final payment.",
           text: "扣留該專家的最後薪酬，強迫對方必須留任到專案結案為止",
           isCorrect: false
+        },
+        {
+          id: "B",
+          enText: "Assess the impact on deliverables and review the Risk Register for contingency staffing plans.",
+          text: "評估其未完成工作對專案的衝擊，並查閱風險登記冊中的人員替補應變方案 (Assess Impact)",
+          isCorrect: true
         },
         {
           id: "C",
@@ -645,8 +646,8 @@ window.PMP_DATA = {
         verdict: "人員異動第一步：冷靜評估衝擊，啟動交接與備案！",
         mindset: "面對關鍵人才流失（單一故障點風險），PM 需先盤點其在手工作、評估時程衝擊，並尋求風險登記冊中的應變資源（如廠商外包、內部調度），同時做好知識轉移 (Knowledge Transfer)。",
         fourOptions: {
-          A: "【正解】理性評估影響並啟用預備方案，確保業務持續性。",
-          B: "【踩雷：違法強留】扣留薪水違反勞動法規，不是職業 PM 的行為。",
+          A: "【踩雷：違法強留】扣留薪水違反勞動法規，不是職業 PM 的行為。",
+          B: "【正解】理性評估影響並啟用預備方案，確保業務持續性。",
           C: "【踩雷：過度恐慌】不能隨意讓專案陷入無限期停工。",
           D: "【踩雷：草率冒險】讓毫無資安背景的初階人員盲幹，會導致災難性安全破洞。"
         },
@@ -718,9 +719,9 @@ window.PMP_DATA = {
       options: [
         {
           id: "A",
-          enText: "Schedule a one-on-one session to listen to concerns and involve them in defining local workflows.",
-          text: "安排一對一面談，耐心傾聽其核心顧慮，並邀請該廠長參與定義在地工作流程以賦予話語權",
-          isCorrect: true
+          enText: "Request the CEO to issue an executive order commanding the director to comply.",
+          text: "請執行長 (CEO) 發布行政命令，直接強壓該廠長必須服從專案決策",
+          isCorrect: false
         },
         {
           id: "B",
@@ -730,9 +731,9 @@ window.PMP_DATA = {
         },
         {
           id: "C",
-          enText: "Request the CEO to issue an executive order commanding the director to comply.",
-          text: "請執行長 (CEO) 發布行政命令，直接強壓該廠長必須服從專案決策",
-          isCorrect: false
+          enText: "Schedule a one-on-one session to listen to concerns and involve them in defining local workflows.",
+          text: "安排一對一面談，耐心傾聽其核心顧慮，並邀請該廠長參與定義在地工作流程以賦予話語權",
+          isCorrect: true
         },
         {
           id: "D",
@@ -745,9 +746,9 @@ window.PMP_DATA = {
         verdict: "化阻力為助力：傾聽顧慮 (Listen to Concerns) 並賦予參與權！",
         mindset: "利害關係人參與管理 (Stakeholder Engagement) 的精髓：抗拒往往來自於未知與失控感。PM 應展現同理心，了解利益訴求，並透過邀請對方參與設計 (Involvement)，讓其從「抗拒者 (Resistant)」轉化為「支持者 (Supportive)」。",
         fourOptions: {
-          A: "【正解】傾聽顧慮、讓對方參與決策，化被動接受為主動參與，這是頂級 PM 的手腕。",
+          A: "【踩雷：強權壓迫】大老闆不可能天天幫你壓人，強壓之下必有陽奉陰違。",
           B: "【踩雷：密室搞分裂】繞過主管直接找基層，只會讓該廠長更憤怒並在背後全面抵制。",
-          C: "【踩雷：強權壓迫】大老闆不可能天天幫你壓人，強壓之下必有陽奉陰違。",
+          C: "【正解】傾聽顧慮、讓對方參與決策，化被動接受為主動參與，這是頂級 PM 的手腕。",
           D: "【踩雷：鴕鳥拖延】問題不會自己消失，偷偷剔除最後只會爆發更大衝突。"
         },
         metaphor: "社區要蓋新電梯，一樓住戶最反對因為用不到還怕吵。管委會不是找里長去罵他，而是找他泡茶問他在意什麼，並承諾給予一樓景觀補償或免費門面整修，大家就握手言和了！",
@@ -768,9 +769,9 @@ window.PMP_DATA = {
       options: [
         {
           id: "A",
-          enText: "Log the finding in the Issue Log and conduct a root cause analysis to determine correction scope.",
-          text: "將該稽核缺失登錄至 Issue Log，並召集專家進行根本原因分析以釐清修復範疇與衝擊",
-          isCorrect: true
+          enText: "Immediately purchase a third-party gateway without evaluating compatibility.",
+          text: "在未評估相容性與預算的情況下，立即刷卡買下昂貴的現成第三方閘道",
+          isCorrect: false
         },
         {
           id: "B",
@@ -786,19 +787,19 @@ window.PMP_DATA = {
         },
         {
           id: "D",
-          enText: "Immediately purchase a third-party gateway without evaluating compatibility.",
-          text: "在未評估相容性與預算的情況下，立即刷卡買下昂貴的現成第三方閘道",
-          isCorrect: false
+          enText: "Log the finding in the Issue Log and conduct a root cause analysis to determine correction scope.",
+          text: "將該稽核缺失登錄至 Issue Log，並召集專家進行根本原因分析以釐清修復範疇與衝擊",
+          isCorrect: true
         }
       ],
       explanation: {
         verdict: "發現法規與品質缺失：如實登錄 (Log) 並追查根因 (RCA)！",
         mindset: "PMP 職業道德與法規遵循鐵律：安全與合規不可妥協。發現稽核缺失 (Audit finding)，標準流程是：登記到 Issue Log ➔ 根本原因分析 (RCA) ➔ 提出矯正措施 (Corrective Action) 走變更流程。",
         fourOptions: {
-          A: "【正解】依法登錄、追查根因、評估修復範圍，這是專業標準處置作業。",
+          A: "【踩雷：衝動採購】未做衝擊分析就盲目買新產品，只會衍生更多架構災難。",
           B: "【踩雷：道德欺詐】隱瞞合規風險在 PMP 考試直接淘汰出局，且現實中面臨刑責。",
           C: "【踩雷：質疑稽核】稽核是為了及早發現未爆彈，對抗稽核是完全錯誤的觀念。",
-          D: "【踩雷：衝動採購】未做衝擊分析就盲目買新產品，只會衍生更多架構災難。"
+          D: "【正解】依法登錄、追查根因、評估修復範圍，這是專業標準處置作業。"
         },
         metaphor: "新車出廠前安全檢查發現煞車油壓不足，車廠不是把報告藏起來直接交車給客人，而是立刻記案並拆開管路查出是哪顆螺絲沒鎖緊！",
         keyEnAction: "Log Finding in Issue Log & Perform Root Cause Analysis"
@@ -848,7 +849,7 @@ window.PMP_DATA = {
           A: "【正解】依據團隊簽署的 DoD 客觀檢視，堅持敏捷品質原則。",
           B: "【踩雷：灌水速率】敏捷禁止把未完成的故事算部分點數，這會造成虛假的進度幻覺。",
           C: "【踩雷：犧牲品質】降低驗收標準只會累積巨大的技術債務 (Technical Debt)。",
-          D: "【踩雷：推給他人】誰寫 code 誰維護品質，不能把後續雜事甩鍋給測試人員加班。"
+          D: "【踩雷：推給他人】誰寫 code誰維護品質，不能把後續雜事甩鍋給測試人員加班。"
         },
         metaphor: "你去餐廳點煎牛排，廚師把生牛肉切好丟在盤子上說『我肉切完了算做好了80%』，你絕對不可能吞下去！必須煎熟、擺盤、附上醬汁（符合 DoD）才能端給客人！",
         keyEnAction: "Enforce Definition of Done (DoD) & Maintain Quality Standards"
@@ -868,15 +869,15 @@ window.PMP_DATA = {
       options: [
         {
           id: "A",
-          enText: "Fast Tracking (performing activities in parallel to compress schedule without extra cost).",
-          text: "採用【快速跟進 (Fast Tracking)】，將原先依序進行的任務改為平行並行，在不增加預算下追趕進度",
-          isCorrect: true
-        },
-        {
-          id: "B",
           enText: "Crashing (adding extra costly resources to the critical path).",
           text: "採用【趕工 (Crashing)】，對關鍵路徑投入大量高薪外包與加班費",
           isCorrect: false
+        },
+        {
+          id: "B",
+          enText: "Fast Tracking (performing activities in parallel to compress schedule without extra cost).",
+          text: "採用【快速跟進 (Fast Tracking)】，將原先依序進行的任務改為平行並行，在不增加預算下追趕進度",
+          isCorrect: true
         },
         {
           id: "C",
@@ -895,8 +896,8 @@ window.PMP_DATA = {
         verdict: "沒錢就並行 (Fast Tracking)，有錢才砸資源 (Crashing)！",
         mindset: "時程壓縮兩大核心武器：1. Fast Tracking (快速跟進/並行)：不增成本、增加風險。2. Crashing (趕工)：增加成本、換取時間。題目明確限制『沒有額外預算』，唯一符合條件的就是 Fast Tracking。",
         fourOptions: {
-          A: "【正解】在預算為零的前提下，平行施工是唯一能縮短時間的合規技術。",
-          B: "【踩雷：違反題意】題目白紙黑字寫了無追加預算，Crashing 需要花大錢。",
+          A: "【踩雷：違反題意】題目白紙黑字寫了無追加預算，Crashing 需要花大錢。",
+          B: "【正解】在預算為零的前提下，平行施工是唯一能縮短時間的合規技術。",
           C: "【踩雷：擅自砍範疇】範疇變更需走正式變更審查，不能私自刪減。",
           D: "【踩雷：作弊造假】違反 PMI 道德守則，現實中會被吊銷證照。"
         },
@@ -918,9 +919,9 @@ window.PMP_DATA = {
       options: [
         {
           id: "A",
-          enText: "Collaborate with the Product Owner to prioritize and deliver a Minimum Viable Product (MVP).",
-          text: "與產品負責人 (PO) 合作重新梳理 Backlog，聚焦交付【最小可行產品 (MVP)】以滿足核心商業價值",
-          isCorrect: true
+          enText: "Deliver all features but without running any QA tests to save testing budget.",
+          text: "把所有功能做完，但完全不做任何測試驗證以省下測試預算",
+          isCorrect: false
         },
         {
           id: "B",
@@ -930,9 +931,9 @@ window.PMP_DATA = {
         },
         {
           id: "C",
-          enText: "Deliver all features but without running any QA tests to save testing budget.",
-          text: "把所有功能做完，但完全不做任何測試驗證以省下測試預算",
-          isCorrect: false
+          enText: "Collaborate with the Product Owner to prioritize and deliver a Minimum Viable Product (MVP).",
+          text: "與產品負責人 (PO) 合作重新梳理 Backlog，聚焦交付【最小可行產品 (MVP)】以滿足核心商業價值",
+          isCorrect: true
         },
         {
           id: "D",
@@ -945,9 +946,9 @@ window.PMP_DATA = {
         verdict: "資源受限時，優先交付核心價值：最小可行產品 (MVP)！",
         mindset: "敏捷價值導向交付：80% 的用戶價值往往集中在 20% 的核心功能上（二八法則）。面對預算縮水，最佳對策是聚焦於 MVP（Minimum Viable Product），先讓最關鍵功能上線驗證市場，後續再迭代演進。",
         fourOptions: {
-          A: "【正解】用最精準的預算上線最核心的價值，這是現代敏捷商業管理典範。",
+          A: "【踩雷：豆腐渣工程】不測試的系統上線只會造成嚴重災難與品牌公關危機。",
           B: "【踩雷：荒謬剝削】成員只會集體辭職，專案直接瞬間暴斃。",
-          C: "【踩雷：豆腐渣工程】不測試的系統上線只會造成嚴重災難與品牌公關危機。",
+          C: "【正解】用最精準的預算上線最核心的價值，這是現代敏捷商業管理典範。",
           D: "【踩雷：逃避責任】身為 PM 應展現專業解決商業困境，而非臨陣脫逃。"
         },
         metaphor: "原本想開一間豪華五星級咖啡廳但預算被砍，你先買一台最好的義式咖啡機開一台文青外帶咖啡車（MVP），先把咖啡賣給客人賺錢，日後有錢再擴大店面！",
@@ -968,9 +969,9 @@ window.PMP_DATA = {
       options: [
         {
           id: "A",
-          enText: "Conduct final lessons learned session, update organizational process assets (OPA), and archive project records.",
-          text: "召開最終【經驗學習檢討會】，更新組織過程資產 (OPA)，歸檔專案文件並正式釋放團隊資源",
-          isCorrect: true
+          enText: "Host a celebration dinner and declare the project closed without financial reconciliation.",
+          text: "只辦一場慶功宴吃大餐，不進行任何合約與財務結算就宣布結案",
+          isCorrect: false
         },
         {
           id: "B",
@@ -986,19 +987,19 @@ window.PMP_DATA = {
         },
         {
           id: "D",
-          enText: "Host a celebration dinner and declare the project closed without financial reconciliation.",
-          text: "只辦一場慶功宴吃大餐，不進行任何合約與財務結算就宣布結案",
-          isCorrect: false
+          enText: "Conduct final lessons learned session, update organizational process assets (OPA), and archive project records.",
+          text: "召開最終【經驗學習檢討會】，更新組織過程資產 (OPA)，歸檔專案文件並正式釋放團隊資源",
+          isCorrect: true
         }
       ],
       explanation: {
         verdict: "完美的專案句點：總結 Lessons Learned，沉澱 OPA 資產！",
         mindset: "收尾流程組 (Closing Process Group) 的黃金步驟：1. 正式驗收 ➔ 2. 總結經驗學習 (Lessons Learned) ➔ 3. 歸檔文件與更新 OPA ➔ 4. 財務/合約結算 ➔ 5. 釋放資源 (Release Resources)。",
         fourOptions: {
-          A: "【正解】標準結案 SOP，將專案智慧沉澱為公司組織資產，並正式釋放人員。",
+          A: "【踩雷：未做財務結算】未完成合約與帳務結算，專案在法律與財務上不算真正結束。",
           B: "【踩雷：虎頭蛇尾】不歸檔不總結，下一次別的專案團隊還會重複踩同樣的坑。",
           C: "【踩雷：銷毀證據】刪除歷史紀錄是嚴重的誠信缺失與稽核違規。",
-          D: "【踩雷：未做財務結算】未完成合約與帳務結算，專案在法律與財務上不算真正結束。"
+          D: "【正解】標準結案 SOP，將專案智慧沉澱為公司組織資產，並正式釋放人員。"
         },
         metaphor: "打贏一場仗，不是大家把槍丟在地上就跑去喝酒，而是要把戰利品入庫、統計彈藥消耗、寫下作戰報告（經驗學習），最後正式頒發退伍令讓弟兄回家！",
         keyEnAction: "Document Lessons Learned, Update OPAs & Archive Project Records"
@@ -1012,5 +1013,3 @@ window.PMP_DATA.duels = window.PMP_DATA.questions;
 window.PMP_DATA.radars = [];
 window.PMP_DATA.keywords = [];
 window.PMP_DATA.goldenRules = [];
-
-
